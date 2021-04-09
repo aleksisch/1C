@@ -17,10 +17,7 @@ Decryptor::Decryptor(const std::string& filename, int max_key_size) : max_key_si
             words[i] += current_word[i];
         }
         for (const auto &word : words) {
-            if (map_.count(word) == 0) {
-                map_[word] = word_number;
-            }
-//            trie_.Add(word, word_number);
+            trie_.Add(word, word_number);
         }
         if (words.size() == max_key_size) {
             words.pop_back();
@@ -29,16 +26,11 @@ Decryptor::Decryptor(const std::string& filename, int max_key_size) : max_key_si
     }
 }
 
-int Decryptor::GetValue(const std::string& key) {
-//    auto res = trie_.Has(key);
-//    if (!res) {
-//        return -1;
-//    } else {
-//        return *res;
-//    }
-    if (map_.count(key) == 0) {
+size_t Decryptor::GetValue(const std::string& key) {
+    auto res = trie_.Has(key);
+    if (!res) {
         return -1;
     } else {
-        return map_[key];
+        return *res - key.size() + 2;
     }
 }

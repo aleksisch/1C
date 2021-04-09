@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     while (std::cin) {
         std::string key;
         std::cin >> key;
-        std::cout << c.GetValue(key) - key.size() + 2 << std::endl;
+        std::cout << c.GetValue(key) << std::endl;
     }
     return 0;
 }
