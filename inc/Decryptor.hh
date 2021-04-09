@@ -2,14 +2,16 @@
 
 #include <iostream>
 #include <vector>
-#include "Trie.hpp"
+#include <Trie.hpp>
 
 class Decryptor {
 public:
     Decryptor(const std::string& filename, int max_key_size);
-    size_t GetValue(const std::string& key);
+    long long GetValue(const std::string& key);
 
 private:
-    Trie<int> trie_;
+    Trie<long long> trie_;
     const int max_key_size_;
+    int word_number;
+    void InsertWord(std::deque<std::string> &deque);
 };

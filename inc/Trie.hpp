@@ -14,7 +14,7 @@ class Trie {
     std::shared_ptr<vertex> root;
 public:
     explicit Trie(const std::vector<std::string>& inputStr = std::vector<std::string>()) {
-        root = std::make_shared<vertex>(T());
+        root = std::make_shared<vertex>(0);
     }
 
     void Add(const std::string& addStr, T value) {

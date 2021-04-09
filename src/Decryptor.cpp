@@ -5,32 +5,38 @@
 Decryptor::Decryptor(const std::string& filename, int max_key_size) : max_key_size_(max_key_size) {
     std::ifstream f(filename);
     std::deque<std::string> words;
-    int word_number = 0;
+    word_number = 1;
     while (f) {
         std::string current_word;
         f >> current_word;
-        words.emplace_front(std::string(1, current_word[0]));
-        if (current_word.size() > words.size()) {
-            current_word = current_word.substr(0, words.size());
+        words.emplace_back(current_word);
+        if (words.size() == max_key_size_) {
+            InsertWord(words);
         }
-        for (int i = 1; i < current_word.size(); i++) {
-            words[i] += current_word[i];
-        }
-        for (const auto &word : words) {
-            trie_.Add(word, word_number);
-        }
-        if (words.size() == max_key_size) {
-            words.pop_back();
-        }
-        ++word_number;
+    }
+    while (!words.empty()) {
+        InsertWord(words);
     }
 }
 
-size_t Decryptor::GetValue(const std::string& key) {
+void Decryptor::InsertWord(std::deque<std::string>& words) {
+    std::string res;
+    for (int i = 0; i < words.size(); i++) {
+        if (words[i].size() < i) {
+            break;
+        }
+        res += words[i][i];
+    }
+    trie_.Add(res, word_number);
+    word_number++;
+    words.pop_front();
+}
+
+long long Decryptor::GetValue(const std::string& key) {
     auto res = trie_.Has(key);
     if (!res) {
         return -1;
     } else {
-        return *res - key.size() + 2;
+        return *res;
     }
 }
